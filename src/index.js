@@ -1,7 +1,7 @@
 import "rc-slider/assets/index.css";
 
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSpring, animated } from "react-spring";
 import ReactDOM from "react-dom";
 import BezierEditor from "bezier-easing-editor";
 import BezierEasing from "bezier-easing";
@@ -11,6 +11,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Switch from "@material-ui/core/Switch";
+import { useUrlState } from "with-url-state";
 
 import "./styles.css";
 
@@ -34,17 +35,23 @@ function getShadowString(object) {
 }
 
 function ShadowObject(props) {
+  const animationProps = useSpring({
+    opacity: `1`,
+    from: { opacity: "0" },
+    config: { mass: 1, tension: 280, friction: 100 },
+  });
   return (
-    <div
+    <animated.div
       style={{
         boxShadow: props.shadow,
         width: "12em",
-        height: "12em",
+        height: "10em",
         margin: "1em",
         padding: "1em",
         borderRadius: ".33em",
         display: "inline-block",
         lineHeight: 1.2,
+        ...animationProps,
       }}
     >
       <div style={{ fontSize: "3em", fontWeight: "bold" }}>{props.number}</div>
@@ -59,7 +66,7 @@ function ShadowObject(props) {
       >
         {props.text}
       </div>
-    </div>
+    </animated.div>
   );
 }
 
@@ -188,7 +195,7 @@ function ShadowControllers(props) {
           />
         </div>{" "}
         <div style={sliderBoxStyle}>
-          <label>Softness</label>
+          <label>Blur/Softness</label>
           <Range
             {...rangeStyles}
             defaultValue={blurBoundaries}
@@ -292,7 +299,7 @@ function ShadowControllers(props) {
           />
         </div>
         <div style={{ padding: ".5em" }}>
-          <label style={{ display: "block" }}>Softness</label>
+          <label style={{ display: "block" }}>Blur/Softness</label>
           <BezierEditor
             width={160}
             height={160}
@@ -317,51 +324,291 @@ function ShadowControllers(props) {
 }
 
 function App() {
-  const [amount, setAmount] = useState(7);
+  const defaults = {
+    amount: 7,
+    shadow1: {
+      bezierCurveY: [0.4, 0, 1, 0.8],
+      bezierCurveBlur: [0.4, 0, 1, 0.8],
+      bezierCurveSpread: [0.4, 0, 1, 0.8],
+      yBoundaries: [0, 4],
+      blurBoundaries: [0, 8],
+      spreadBoundaries: [1, 4],
+      opacity: 0.07,
+      negativeSpread: false,
+    },
+    shadow2: {
+      bezierCurveY: [0.4, 0, 1, 0.8],
+      bezierCurveBlur: [0.4, 0, 1, 0.8],
+      bezierCurveSpread: [0.4, 0, 1, 0.8],
+      yBoundaries: [1, 16],
+      blurBoundaries: [2, 16],
+      spreadBoundaries: [1, 2],
+      opacity: 0.07,
+      negativeSpread: true,
+    },
+    shadow3: {
+      bezierCurveY: [0.4, 0, 1, 0.8],
+      bezierCurveBlur: [0.4, 0, 1, 0.8],
+      bezierCurveSpread: [0.4, 0, 1, 0.8],
+      yBoundaries: [0, 32],
+      blurBoundaries: [0, 64],
+      spreadBoundaries: [1, 5],
+      opacity: 0.07,
+      negativeSpread: false,
+    },
+  };
+
+  const [urlState, setUrlState] = useUrlState({
+    params: encodeURIComponent(JSON.stringify(defaults)),
+  });
+
+  const url = JSON.parse(decodeURIComponent(urlState.params));
+  //console.log(url.amount);
+
+  const initial = {
+    amount: typeof url.amount !== "undefined" ? url.amount : defaults.amount,
+    shadow1: {
+      bezierCurveY:
+        typeof url.shadow1.bezierCurveY !== "undefined"
+          ? url.shadow1.bezierCurveY
+          : defaults.shadow1.bezierCurveY,
+      bezierCurveBlur:
+        typeof url.shadow1.bezierCurveBlur !== "undefined"
+          ? url.shadow1.bezierCurveBlur
+          : defaults.shadow1.bezierCurveBlur,
+      bezierCurveSpread:
+        typeof url.shadow1.bezierCurveSpread !== "undefined"
+          ? url.shadow1.bezierCurveSpread
+          : defaults.shadow1.bezierCurveSpread,
+      yBoundaries:
+        typeof url.shadow1.yBoundaries !== "undefined"
+          ? url.shadow1.yBoundaries
+          : defaults.shadow1.yBoundaries,
+      blurBoundaries:
+        typeof url.shadow1.blurBoundaries !== "undefined"
+          ? url.shadow1.blurBoundaries
+          : defaults.shadow1.blurBoundaries,
+      spreadBoundaries:
+        typeof url.shadow1.spreadBoundaries !== "undefined"
+          ? url.shadow1.spreadBoundaries
+          : defaults.shadow1.spreadBoundaries,
+      opacity:
+        typeof url.shadow1.opacity !== "undefined"
+          ? url.shadow1.opacity
+          : defaults.shadow1.opacity,
+      negativeSpread:
+        typeof url.shadow1.negativeSpread !== "undefined"
+          ? url.shadow1.negativeSpread
+          : defaults.shadow1.negativeSpread,
+    },
+    shadow2: {
+      bezierCurveY:
+        typeof url.shadow2.bezierCurveY !== "undefined"
+          ? url.shadow2.bezierCurveY
+          : defaults.shadow2.bezierCurveY,
+      bezierCurveBlur:
+        typeof url.shadow2.bezierCurveBlur !== "undefined"
+          ? url.shadow2.bezierCurveBlur
+          : defaults.shadow2.bezierCurveBlur,
+      bezierCurveSpread:
+        typeof url.shadow2.bezierCurveSpread !== "undefined"
+          ? url.shadow2.bezierCurveSpread
+          : defaults.shadow2.bezierCurveSpread,
+      yBoundaries:
+        typeof url.shadow2.yBoundaries !== "undefined"
+          ? url.shadow2.yBoundaries
+          : defaults.shadow2.yBoundaries,
+      blurBoundaries:
+        typeof url.shadow2.blurBoundaries !== "undefined"
+          ? url.shadow2.blurBoundaries
+          : defaults.shadow2.blurBoundaries,
+      spreadBoundaries:
+        typeof url.shadow2.spreadBoundaries !== "undefined"
+          ? url.shadow2.spreadBoundaries
+          : defaults.shadow2.spreadBoundaries,
+      opacity:
+        typeof url.shadow2.opacity !== "undefined"
+          ? url.shadow2.opacity
+          : defaults.shadow2.opacity,
+      negativeSpread:
+        typeof url.shadow2.negativeSpread !== "undefined"
+          ? url.shadow2.negativeSpread
+          : defaults.shadow2.negativeSpread,
+    },
+    shadow3: {
+      bezierCurveY:
+        typeof url.shadow3.bezierCurveY !== "undefined"
+          ? url.shadow3.bezierCurveY
+          : defaults.shadow3.bezierCurveY,
+      bezierCurveBlur:
+        typeof url.shadow3.bezierCurveBlur !== "undefined"
+          ? url.shadow3.bezierCurveBlur
+          : defaults.shadow3.bezierCurveBlur,
+      bezierCurveSpread:
+        typeof url.shadow3.bezierCurveSpread !== "undefined"
+          ? url.shadow3.bezierCurveSpread
+          : defaults.shadow3.bezierCurveSpread,
+      yBoundaries:
+        typeof url.shadow3.yBoundaries !== "undefined"
+          ? url.shadow3.yBoundaries
+          : defaults.shadow3.yBoundaries,
+      blurBoundaries:
+        typeof url.shadow3.blurBoundaries !== "undefined"
+          ? url.shadow3.blurBoundaries
+          : defaults.shadow3.blurBoundaries,
+      spreadBoundaries:
+        typeof url.shadow3.spreadBoundaries !== "undefined"
+          ? url.shadow3.spreadBoundaries
+          : defaults.shadow3.spreadBoundaries,
+      opacity:
+        typeof url.shadow3.opacity !== "undefined"
+          ? url.shadow3.opacity
+          : defaults.shadow3.opacity,
+      negativeSpread:
+        typeof url.shadow3.negativeSpread !== "undefined"
+          ? url.shadow3.negativeSpread
+          : defaults.shadow3.negativeSpread,
+    },
+  };
+
+  const [amount, setAmount] = useState(initial.amount);
 
   /* Shadow 1: Contour */
-  const [bezierCurveY, setBezierCurveY] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveBlur, setBezierCurveBlur] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveSpread, setBezierCurveSpread] = useState([0.4, 0, 1, 0.8]);
-  const [yBoundaries, setYBoundaries] = useState([0, 4]);
-  const [blurBoundaries, setBlurBoundaries] = useState([0, 8]);
-  const [spreadBoundaries, setSpreadBoundaries] = useState([1, 4]);
-  const [opacity, setOpacity] = useState(0.07);
-  const [negativeSpread, setNegativeSpread] = useState(false);
+  const [bezierCurveY, setBezierCurveY] = useState(
+    initial.shadow1.bezierCurveY
+  );
+  const [bezierCurveBlur, setBezierCurveBlur] = useState(
+    initial.shadow1.bezierCurveBlur
+  );
+  const [bezierCurveSpread, setBezierCurveSpread] = useState(
+    initial.shadow1.bezierCurveSpread
+  );
+  const [yBoundaries, setYBoundaries] = useState(initial.shadow1.yBoundaries);
+  const [blurBoundaries, setBlurBoundaries] = useState(
+    initial.shadow1.blurBoundaries
+  );
+  const [spreadBoundaries, setSpreadBoundaries] = useState(
+    initial.shadow1.spreadBoundaries
+  );
+  const [opacity, setOpacity] = useState(initial.shadow1.opacity);
+  const [negativeSpread, setNegativeSpread] = useState(
+    initial.shadow1.negativeSpread
+  );
 
   /* Shadow 2: Key Light */
-  const [bezierCurveY2, setBezierCurveY2] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveBlur2, setBezierCurveBlur2] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveSpread2, setBezierCurveSpread2] = useState([
-    0.4,
-    0,
-    1,
-    0.8,
-  ]);
-  const [yBoundaries2, setYBoundaries2] = useState([1, 16]);
-  const [blurBoundaries2, setBlurBoundaries2] = useState([2, 16]);
-  const [spreadBoundaries2, setSpreadBoundaries2] = useState([1, 2]);
-  const [opacity2, setOpacity2] = useState(0.07);
-  const [negativeSpread2, setNegativeSpread2] = useState(true);
+  const [bezierCurveY2, setBezierCurveY2] = useState(
+    initial.shadow2.bezierCurveY
+  );
+  const [bezierCurveBlur2, setBezierCurveBlur2] = useState(
+    initial.shadow2.bezierCurveBlur
+  );
+  const [bezierCurveSpread2, setBezierCurveSpread2] = useState(
+    initial.shadow2.bezierCurveSpread
+  );
+  const [yBoundaries2, setYBoundaries2] = useState(initial.shadow2.yBoundaries);
+  const [blurBoundaries2, setBlurBoundaries2] = useState(
+    initial.shadow2.blurBoundaries
+  );
+  const [spreadBoundaries2, setSpreadBoundaries2] = useState(
+    initial.shadow2.spreadBoundaries
+  );
+  const [opacity2, setOpacity2] = useState(initial.shadow2.opacity);
+  const [negativeSpread2, setNegativeSpread2] = useState(
+    initial.shadow2.negativeSpread
+  );
 
   /* Shadow 3: Soft Shadow */
-  const [bezierCurveY3, setBezierCurveY3] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveBlur3, setBezierCurveBlur3] = useState([0.4, 0, 1, 0.8]);
-  const [bezierCurveSpread3, setBezierCurveSpread3] = useState([
-    0.4,
-    0,
-    1,
-    0.8,
-  ]);
-  const [yBoundaries3, setYBoundaries3] = useState([0, 32]);
-  const [blurBoundaries3, setBlurBoundaries3] = useState([0, 64]);
-  const [spreadBoundaries3, setSpreadBoundaries3] = useState([1, 5]);
-  const [opacity3, setOpacity3] = useState(0.07);
-  const [negativeSpread3, setNegativeSpread3] = useState(false);
+  const [bezierCurveY3, setBezierCurveY3] = useState(
+    initial.shadow3.bezierCurveY
+  );
+  const [bezierCurveBlur3, setBezierCurveBlur3] = useState(
+    initial.shadow3.bezierCurveBlur
+  );
+  const [bezierCurveSpread3, setBezierCurveSpread3] = useState(
+    initial.shadow3.bezierCurveSpread
+  );
+  const [yBoundaries3, setYBoundaries3] = useState(initial.shadow3.yBoundaries);
+  const [blurBoundaries3, setBlurBoundaries3] = useState(
+    initial.shadow3.blurBoundaries
+  );
+  const [spreadBoundaries3, setSpreadBoundaries3] = useState(
+    initial.shadow3.spreadBoundaries
+  );
+  const [opacity3, setOpacity3] = useState(initial.shadow3.opacity);
+  const [negativeSpread3, setNegativeSpread3] = useState(
+    initial.shadow3.negativeSpread
+  );
 
   const [expanded1, setExpanded1] = useState(false);
   const [expanded2, setExpanded2] = useState(false);
   const [expanded3, setExpanded3] = useState(false);
+
+  useEffect(() => {
+    //console.log(JSON.parse(decodeURIComponent(urlState.params)));
+    setUrlState({
+      params: encodeURIComponent(
+        JSON.stringify({
+          amount: amount,
+          shadow1: {
+            bezierCurveY: bezierCurveY,
+            bezierCurveBlur: bezierCurveBlur,
+            bezierCurveSpread: bezierCurveSpread,
+            yBoundaries: yBoundaries,
+            blurBoundaries: blurBoundaries,
+            spreadBoundaries: spreadBoundaries,
+            opacity: opacity,
+            negativeSpread: negativeSpread,
+          },
+          shadow2: {
+            bezierCurveY: bezierCurveY2,
+            bezierCurveBlur: bezierCurveBlur2,
+            bezierCurveSpread: bezierCurveSpread2,
+            yBoundaries: yBoundaries2,
+            blurBoundaries: blurBoundaries2,
+            spreadBoundaries: spreadBoundaries2,
+            opacity: opacity2,
+            negativeSpread: negativeSpread2,
+          },
+          shadow3: {
+            bezierCurveY: bezierCurveY3,
+            bezierCurveBlur: bezierCurveBlur3,
+            bezierCurveSpread: bezierCurveSpread3,
+            yBoundaries: yBoundaries3,
+            blurBoundaries: blurBoundaries3,
+            spreadBoundaries: spreadBoundaries3,
+            opacity: opacity3,
+            negativeSpread: negativeSpread3,
+          },
+        })
+      ),
+    });
+  }, [
+    amount,
+    bezierCurveY,
+    bezierCurveBlur,
+    bezierCurveSpread,
+    yBoundaries,
+    blurBoundaries,
+    spreadBoundaries,
+    opacity,
+    negativeSpread,
+    bezierCurveY2,
+    bezierCurveBlur2,
+    bezierCurveSpread2,
+    yBoundaries2,
+    blurBoundaries2,
+    spreadBoundaries2,
+    opacity2,
+    negativeSpread2,
+    bezierCurveY3,
+    bezierCurveBlur3,
+    bezierCurveSpread3,
+    yBoundaries3,
+    blurBoundaries3,
+    spreadBoundaries3,
+    opacity3,
+    negativeSpread3,
+  ]);
 
   let shadowObjects = [];
   for (let i = 0; i < amount; i++) {
@@ -467,7 +714,7 @@ function App() {
           }}
         >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            Shadow 1 (Contour)
+            Shadow 1 (e.g. Contour)
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <ShadowControllers
@@ -498,7 +745,7 @@ function App() {
           }}
         >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            Shadow 2 (Key Light)
+            Shadow 2 (e.g. Key Light)
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <ShadowControllers
@@ -529,7 +776,7 @@ function App() {
           }}
         >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            Shadow 3 (Soft Light)
+            Shadow 3 (e.g. Soft Light)
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <ShadowControllers

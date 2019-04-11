@@ -319,24 +319,24 @@ function ShadowControllers(props) {
 function App() {
   const [amount, setAmount] = useState(7);
 
-  /* Shadow 1 */
-  const [bezierCurveY, setBezierCurveY] = useState([0.6, 0, 1, 0.6]);
-  const [bezierCurveBlur, setBezierCurveBlur] = useState([0.6, 0, 1, 0.6]);
-  const [bezierCurveSpread, setBezierCurveSpread] = useState([0.6, 0, 1, 0.6]);
+  /* Shadow 1: Contour */
+  const [bezierCurveY, setBezierCurveY] = useState([0.4, 0, 1, 0.8]);
+  const [bezierCurveBlur, setBezierCurveBlur] = useState([0.4, 0, 1, 0.8]);
+  const [bezierCurveSpread, setBezierCurveSpread] = useState([0.4, 0, 1, 0.8]);
   const [yBoundaries, setYBoundaries] = useState([0, 4]);
   const [blurBoundaries, setBlurBoundaries] = useState([0, 8]);
-  const [spreadBoundaries, setSpreadBoundaries] = useState([0, 2]);
+  const [spreadBoundaries, setSpreadBoundaries] = useState([1, 4]);
   const [opacity, setOpacity] = useState(0.07);
   const [negativeSpread, setNegativeSpread] = useState(false);
 
-  /* Shadow 2 */
-  const [bezierCurveY2, setBezierCurveY2] = useState([0.6, 0, 1, 0.6]);
-  const [bezierCurveBlur2, setBezierCurveBlur2] = useState([0.6, 0, 1, 0.6]);
+  /* Shadow 2: Key Light */
+  const [bezierCurveY2, setBezierCurveY2] = useState([0.4, 0, 1, 0.8]);
+  const [bezierCurveBlur2, setBezierCurveBlur2] = useState([0.4, 0, 1, 0.8]);
   const [bezierCurveSpread2, setBezierCurveSpread2] = useState([
-    0.6,
+    0.4,
     0,
     1,
-    0.6,
+    0.8,
   ]);
   const [yBoundaries2, setYBoundaries2] = useState([1, 16]);
   const [blurBoundaries2, setBlurBoundaries2] = useState([2, 16]);
@@ -344,14 +344,14 @@ function App() {
   const [opacity2, setOpacity2] = useState(0.07);
   const [negativeSpread2, setNegativeSpread2] = useState(true);
 
-  /* Shadow 3 */
-  const [bezierCurveY3, setBezierCurveY3] = useState([0.6, 0, 1, 0.6]);
-  const [bezierCurveBlur3, setBezierCurveBlur3] = useState([0.6, 0, 1, 0.6]);
+  /* Shadow 3: Soft Shadow */
+  const [bezierCurveY3, setBezierCurveY3] = useState([0.4, 0, 1, 0.8]);
+  const [bezierCurveBlur3, setBezierCurveBlur3] = useState([0.4, 0, 1, 0.8]);
   const [bezierCurveSpread3, setBezierCurveSpread3] = useState([
-    0.6,
+    0.4,
     0,
     1,
-    0.6,
+    0.8,
   ]);
   const [yBoundaries3, setYBoundaries3] = useState([0, 32]);
   const [blurBoundaries3, setBlurBoundaries3] = useState([0, 64]);

@@ -35,8 +35,8 @@ function ShadowObject(props) {
     <div
       style={{
         boxShadow: props.shadow,
-        width: "10em",
-        height: "10em",
+        width: "12em",
+        height: "12em",
         margin: "1em",
         padding: "1em",
         borderRadius: ".33em",
@@ -45,7 +45,15 @@ function ShadowObject(props) {
       }}
     >
       <div style={{ fontSize: "3em", fontWeight: "bold" }}>{props.number}</div>
-      <div style={{ fontSize: ".75em", marginTop: ".5em", lineHeight: 1.4 }}>
+      <div
+        style={{
+          fontSize: ".75em",
+          marginTop: ".5em",
+          lineHeight: 1.4,
+          color: "rgba(0,0,0,.5)",
+          fontWeight: "lighter",
+        }}
+      >
         {props.text}
       </div>
     </div>
@@ -55,16 +63,20 @@ function ShadowObject(props) {
 const rangeStyles = {
   handleStyle: [{ borderColor: themeColor }, { borderColor: themeColor }],
   trackStyle: [{ backgroundColor: themeColor }],
+  activeDotStyle: { borderColor: themeColor },
   style: { marginTop: ".5em" },
 };
 
 const sliderStyles = {
   handleStyle: { borderColor: themeColor },
   trackStyle: { backgroundColor: themeColor },
+  activeDotStyle: { borderColor: themeColor },
   style: { marginTop: ".5em" },
 };
 
-const sliderBoxStyle = { width: "16em", margin: "1em" };
+const sliderBoxStyle = { width: "32em", margin: "1em" };
+
+const markLabelStyle = { fontSize: ".75em" };
 
 function ShadowControllers(props) {
   const {
@@ -93,8 +105,30 @@ function ShadowControllers(props) {
             {...sliderStyles}
             defaultValue={opacity}
             min={0}
-            max={1}
+            max={0.5}
             step={0.005}
+            marks={{
+              0: {
+                style: markLabelStyle,
+                label: "0",
+              },
+              0.05: {
+                style: markLabelStyle,
+                label: "5",
+              },
+              0.1: {
+                style: markLabelStyle,
+                label: "10",
+              },
+              0.25: {
+                style: markLabelStyle,
+                label: "25",
+              },
+              0.5: {
+                style: markLabelStyle,
+                label: "50%",
+              },
+            }}
             onChange={val => {
               setOpacity(val);
             }}
@@ -106,7 +140,36 @@ function ShadowControllers(props) {
             {...rangeStyles}
             defaultValue={yBoundaries}
             min={0}
-            max={64}
+            max={48}
+            marks={{
+              0: {
+                style: markLabelStyle,
+                label: "0",
+              },
+              4: {
+                style: markLabelStyle,
+                label: "4",
+              },
+              8: {
+                style: markLabelStyle,
+                label: "8",
+              },
+              16: {
+                style: markLabelStyle,
+                label: "16",
+              },
+              32: {
+                style: markLabelStyle,
+                label: "32",
+              },
+              48: {
+                style: markLabelStyle,
+                label: "48px",
+              },
+            }}
+            onChange={val => {
+              setOpacity(val);
+            }}
             onChange={val => {
               setYBoundaries(val);
             }}
@@ -118,7 +181,37 @@ function ShadowControllers(props) {
             {...rangeStyles}
             defaultValue={blurBoundaries}
             min={0}
-            max={128}
+            max={96}
+            marks={{
+              0: {
+                style: markLabelStyle,
+                label: "0",
+              },
+              4: {
+                style: markLabelStyle,
+                label: "4",
+              },
+              8: {
+                style: markLabelStyle,
+                label: "8",
+              },
+              16: {
+                style: markLabelStyle,
+                label: "16",
+              },
+              32: {
+                style: markLabelStyle,
+                label: "32",
+              },
+              64: {
+                style: markLabelStyle,
+                label: "64",
+              },
+              96: {
+                style: markLabelStyle,
+                label: "96px",
+              },
+            }}
             onChange={val => {
               setBlurBoundaries(val);
             }}
@@ -130,7 +223,33 @@ function ShadowControllers(props) {
             {...rangeStyles}
             defaultValue={spreadBoundaries}
             min={0}
-            max={15}
+            max={16}
+            marks={{
+              0: {
+                style: markLabelStyle,
+                label: "0",
+              },
+              1: {
+                style: markLabelStyle,
+                label: "1",
+              },
+              2: {
+                style: markLabelStyle,
+                label: "2",
+              },
+              4: {
+                style: markLabelStyle,
+                label: "4",
+              },
+              8: {
+                style: markLabelStyle,
+                label: "8",
+              },
+              16: {
+                style: markLabelStyle,
+                label: "16px",
+              },
+            }}
             onChange={val => {
               setSpreadBoundaries(val);
             }}
@@ -139,7 +258,7 @@ function ShadowControllers(props) {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         <div>
-          <label>Softness</label>
+          <label>Vertical Distance</label>
           <BezierEditor
             handleColor={themeColor}
             value={bezierCurveY}
@@ -155,7 +274,7 @@ function ShadowControllers(props) {
           />
         </div>
         <div>
-          <label>Softness</label>
+          <label>Spread</label>
           <BezierEditor
             handleColor={themeColor}
             value={bezierCurveSpread}
@@ -290,6 +409,28 @@ function App() {
             defaultValue={amount}
             min={3}
             max={24}
+            marks={{
+              3: {
+                style: markLabelStyle,
+                label: "3",
+              },
+              6: {
+                style: markLabelStyle,
+                label: "6",
+              },
+              12: {
+                style: markLabelStyle,
+                label: "12",
+              },
+              18: {
+                style: markLabelStyle,
+                label: "18",
+              },
+              24: {
+                style: markLabelStyle,
+                label: "24",
+              },
+            }}
             onChange={val => {
               setAmount(val);
             }}
@@ -303,7 +444,7 @@ function App() {
         }}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 1
+          Shadow 1 (Contour)
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <ShadowControllers
@@ -332,7 +473,7 @@ function App() {
         }}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 2
+          Shadow 2 (Key Light)
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <ShadowControllers
@@ -361,7 +502,7 @@ function App() {
         }}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 3
+          Shadow 3 (Soft Light)
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <ShadowControllers

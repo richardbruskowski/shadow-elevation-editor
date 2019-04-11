@@ -9,34 +9,17 @@ import { Range } from "rc-slider";
 
 import "./styles.css";
 
-const opacity = 0.2;
+const opacity = 0.08;
 
-// This is wrong, one dimension too much --> instead get y(x)
-function getBezierXY(t, sx, sy, cp1x, cp1y, cp2x, cp2y, ex, ey) {
-  const x =
-    Math.pow(1 - t, 3) * sx +
-    3 * t * Math.pow(1 - t, 2) * cp1x +
-    3 * t * t * (1 - t) * cp2x +
-    t * t * t * ex;
-  const y =
-    Math.pow(1 - t, 3) * sy +
-    3 * t * Math.pow(1 - t, 2) * cp1y +
-    3 * t * t * (1 - t) * cp2y +
-    t * t * t * ey;
-  return {
-    x: x.toFixed(2),
-    y: y.toFixed(2)
-  };
-}
-
-// uffz
 function getBezierY(x, bezier) {
-  const easing = BezierEasing(bezier);
+  console.log(bezier);
+  const easing = BezierEasing(...bezier);
+  console.log(x + ": " + easing(x));
   return easing(x);
 }
 
 function getShadowString(object) {
-  return `0 ${object.y.y}px ${object.blur.y}px ${(object.spread.y / 10).toFixed(
+  return `0 ${object.y}px ${object.blur}px ${(object.spread / 10).toFixed(
     2
   )}px rgba(0,0,0,${opacity})`;
 }
@@ -76,33 +59,24 @@ function App() {
   const [spreadBoundaries, setSpreadBoundaries] = useState([0, 1]);
 
   let shadowObjects = [];
-  let amount = 20;
+  let amount = 7;
   for (let i = 0; i < amount; i++) {
     shadowObjects.push({
-      y: getBezierXY(
-        (1 / amount) * i,
-        0,
-        yBoundaries[0],
-        ...bezierCurveY,
-        amount,
-        yBoundaries[1]
-      ),
-      blur: getBezierXY(
-        (1 / amount) * i,
-        0,
-        blurBoundaries[0],
-        ...bezierCurveBlur,
-        amount,
-        blurBoundaries[1]
-      ),
-      spread: getBezierXY(
-        (1 / amount) * i,
-        0,
-        spreadBoundaries[0],
-        ...bezierCurveSpread,
-        amount,
-        spreadBoundaries[1]
-      )
+      y: (
+        getBezierY((1 / amount) * i, bezierCurveY) *
+          (yBoundaries[1] - yBoundaries[0]) +
+        yBoundaries[0]
+      ).toFixed(1),
+      blur: (
+        getBezierY((1 / amount) * i, bezierCurveBlur) *
+          (blurBoundaries[1] - blurBoundaries[0]) +
+        blurBoundaries[0]
+      ).toFixed(1),
+      spread: (
+        getBezierY((1 / amount) * i, bezierCurveSpread) *
+          (spreadBoundaries[1] - spreadBoundaries[0]) +
+        spreadBoundaries[0]
+      ).toFixed(1)
     });
   }
 

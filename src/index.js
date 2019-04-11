@@ -74,7 +74,7 @@ const sliderStyles = {
   style: { marginTop: ".5em" },
 };
 
-const sliderBoxStyle = { width: "32em", margin: "1em" };
+const sliderBoxStyle = { width: "30em", marginBottom: "2em" };
 
 const markLabelStyle = { fontSize: ".75em" };
 
@@ -97,8 +97,15 @@ function ShadowControllers(props) {
   } = props;
 
   return (
-    <>
-      <div style={{ padding: "2em", display: "flex", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div
+        style={{
+          padding: ".5em",
+          display: "flex",
+          flexWrap: "wrap",
+          maxWidth: "36em",
+        }}
+      >
         <div style={sliderBoxStyle}>
           <label>Opacity</label>
           <Slider
@@ -257,32 +264,38 @@ function ShadowControllers(props) {
         </div>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <div>
-          <label>Vertical Distance</label>
+        <div style={{ padding: ".5em" }}>
+          <label style={{ display: "block" }}>Vertical Distance</label>
           <BezierEditor
+            width={160}
+            height={160}
             handleColor={themeColor}
             value={bezierCurveY}
             onChange={val => setBezierCurveY(val)}
           />
         </div>
-        <div>
-          <label>Softness</label>
+        <div style={{ padding: ".5em" }}>
+          <label style={{ display: "block" }}>Softness</label>
           <BezierEditor
+            width={160}
+            height={160}
             handleColor={themeColor}
             value={bezierCurveBlur}
             onChange={val => setBezierCurveBlur(val)}
           />
         </div>
-        <div>
-          <label>Spread</label>
+        <div style={{ padding: ".5em" }}>
+          <label style={{ display: "block" }}>Spread</label>
           <BezierEditor
+            width={160}
+            height={160}
             handleColor={themeColor}
             value={bezierCurveSpread}
             onChange={val => setBezierCurveSpread(val)}
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -400,131 +413,133 @@ function App() {
   }
 
   return (
-    <>
-      <div style={{ padding: "2em", display: "flex", flexWrap: "wrap" }}>
-        <div style={sliderBoxStyle}>
-          <label>Amount of steps</label>
-          <Slider
-            {...sliderStyles}
-            defaultValue={amount}
-            min={3}
-            max={24}
-            marks={{
-              3: {
-                style: markLabelStyle,
-                label: "3",
-              },
-              6: {
-                style: markLabelStyle,
-                label: "6",
-              },
-              12: {
-                style: markLabelStyle,
-                label: "12",
-              },
-              18: {
-                style: markLabelStyle,
-                label: "18",
-              },
-              24: {
-                style: markLabelStyle,
-                label: "24",
-              },
-            }}
-            onChange={val => {
-              setAmount(val);
-            }}
-          />
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ flexBasis: "40%", flexGrow: 1 }}>
+        <div style={{ padding: "2em", display: "flex", flexWrap: "wrap" }}>
+          <div style={sliderBoxStyle}>
+            <label>Amount of steps</label>
+            <Slider
+              {...sliderStyles}
+              defaultValue={amount}
+              min={3}
+              max={24}
+              marks={{
+                3: {
+                  style: markLabelStyle,
+                  label: "3",
+                },
+                6: {
+                  style: markLabelStyle,
+                  label: "6",
+                },
+                12: {
+                  style: markLabelStyle,
+                  label: "12",
+                },
+                18: {
+                  style: markLabelStyle,
+                  label: "18",
+                },
+                24: {
+                  style: markLabelStyle,
+                  label: "24",
+                },
+              }}
+              onChange={val => {
+                setAmount(val);
+              }}
+            />
+          </div>
         </div>
+
+        <ExpansionPanel
+          expanded={expanded1}
+          onChange={() => {
+            setExpanded1(!expanded1);
+          }}
+        >
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            Shadow 1 (Contour)
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <ShadowControllers
+              bezierCurveY={bezierCurveY}
+              setBezierCurveY={setBezierCurveY}
+              bezierCurveBlur={bezierCurveBlur}
+              setBezierCurveBlur={setBezierCurveBlur}
+              bezierCurveSpread={bezierCurveSpread}
+              setBezierCurveSpread={setBezierCurveSpread}
+              yBoundaries={yBoundaries}
+              setYBoundaries={setYBoundaries}
+              blurBoundaries={blurBoundaries}
+              setBlurBoundaries={setBlurBoundaries}
+              spreadBoundaries={spreadBoundaries}
+              setSpreadBoundaries={setSpreadBoundaries}
+              opacity={opacity}
+              setOpacity={setOpacity}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel
+          expanded={expanded2}
+          onChange={() => {
+            setExpanded2(!expanded2);
+          }}
+        >
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            Shadow 2 (Key Light)
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <ShadowControllers
+              bezierCurveY={bezierCurveY2}
+              setBezierCurveY={setBezierCurveY2}
+              bezierCurveBlur={bezierCurveBlur2}
+              setBezierCurveBlur={setBezierCurveBlur2}
+              bezierCurveSpread={bezierCurveSpread2}
+              setBezierCurveSpread={setBezierCurveSpread2}
+              yBoundaries={yBoundaries2}
+              setYBoundaries={setYBoundaries2}
+              blurBoundaries={blurBoundaries2}
+              setBlurBoundaries={setBlurBoundaries2}
+              spreadBoundaries={spreadBoundaries2}
+              setSpreadBoundaries={setSpreadBoundaries2}
+              opacity={opacity2}
+              setOpacity={setOpacity2}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel
+          expanded={expanded3}
+          onChange={() => {
+            setExpanded3(!expanded3);
+          }}
+        >
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            Shadow 3 (Soft Light)
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <ShadowControllers
+              bezierCurveY={bezierCurveY3}
+              setBezierCurveY={setBezierCurveY3}
+              bezierCurveBlur={bezierCurveBlur3}
+              setBezierCurveBlur={setBezierCurveBlur3}
+              bezierCurveSpread={bezierCurveSpread3}
+              setBezierCurveSpread={setBezierCurveSpread3}
+              yBoundaries={yBoundaries3}
+              setYBoundaries={setYBoundaries3}
+              blurBoundaries={blurBoundaries3}
+              setBlurBoundaries={setBlurBoundaries3}
+              spreadBoundaries={spreadBoundaries3}
+              setSpreadBoundaries={setSpreadBoundaries3}
+              opacity={opacity3}
+              setOpacity={setOpacity3}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </div>
-      <ExpansionPanel
-        expanded={expanded1}
-        onChange={() => {
-          setExpanded1(!expanded1);
-        }}
-      >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 1 (Contour)
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <ShadowControllers
-            bezierCurveY={bezierCurveY}
-            setBezierCurveY={setBezierCurveY}
-            bezierCurveBlur={bezierCurveBlur}
-            setBezierCurveBlur={setBezierCurveBlur}
-            bezierCurveSpread={bezierCurveSpread}
-            setBezierCurveSpread={setBezierCurveSpread}
-            yBoundaries={yBoundaries}
-            setYBoundaries={setYBoundaries}
-            blurBoundaries={blurBoundaries}
-            setBlurBoundaries={setBlurBoundaries}
-            spreadBoundaries={spreadBoundaries}
-            setSpreadBoundaries={setSpreadBoundaries}
-            opacity={opacity}
-            setOpacity={setOpacity}
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-
-      <ExpansionPanel
-        expanded={expanded2}
-        onChange={() => {
-          setExpanded2(!expanded2);
-        }}
-      >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 2 (Key Light)
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <ShadowControllers
-            bezierCurveY={bezierCurveY2}
-            setBezierCurveY={setBezierCurveY2}
-            bezierCurveBlur={bezierCurveBlur2}
-            setBezierCurveBlur={setBezierCurveBlur2}
-            bezierCurveSpread={bezierCurveSpread2}
-            setBezierCurveSpread={setBezierCurveSpread2}
-            yBoundaries={yBoundaries2}
-            setYBoundaries={setYBoundaries2}
-            blurBoundaries={blurBoundaries2}
-            setBlurBoundaries={setBlurBoundaries2}
-            spreadBoundaries={spreadBoundaries2}
-            setSpreadBoundaries={setSpreadBoundaries2}
-            opacity={opacity2}
-            setOpacity={setOpacity2}
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-
-      <ExpansionPanel
-        expanded={expanded3}
-        onChange={() => {
-          setExpanded3(!expanded3);
-        }}
-      >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          Shadow 3 (Soft Light)
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <ShadowControllers
-            bezierCurveY={bezierCurveY3}
-            setBezierCurveY={setBezierCurveY3}
-            bezierCurveBlur={bezierCurveBlur3}
-            setBezierCurveBlur={setBezierCurveBlur3}
-            bezierCurveSpread={bezierCurveSpread3}
-            setBezierCurveSpread={setBezierCurveSpread3}
-            yBoundaries={yBoundaries3}
-            setYBoundaries={setYBoundaries3}
-            blurBoundaries={blurBoundaries3}
-            setBlurBoundaries={setBlurBoundaries3}
-            spreadBoundaries={spreadBoundaries3}
-            setSpreadBoundaries={setSpreadBoundaries3}
-            opacity={opacity3}
-            setOpacity={setOpacity3}
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-
-      <div style={{ marginTop: "4em" }}>
+      <div style={{ marginTop: "4em", flexBasis: "50%", flexGrow: 2 }}>
         {shadowObjects.map((e, index) => (
           <ShadowObject
             key={index}
@@ -534,7 +549,7 @@ function App() {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

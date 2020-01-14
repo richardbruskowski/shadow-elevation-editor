@@ -187,9 +187,6 @@ function ShadowControllers(props) {
               },
             }}
             onChange={val => {
-              setOpacity(val);
-            }}
-            onChange={val => {
               setYBoundaries(val);
             }}
           />

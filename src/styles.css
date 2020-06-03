@@ -1,8 +1,18 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 label {
-  font-size: 0.8em;
+	font-size: 0.8em;
+}
+
+.small-print {
+	font-size: 0.9em;
+	color: rgba(0, 0, 0, 0.65);
+}
+
+.source {
+	margin: 2em;
+	line-height: 1.6;
 }

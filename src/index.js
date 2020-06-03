@@ -734,13 +734,7 @@ function App() {
 				<div className="small-print source">
 					Made by{' '}
 					<a href="https://bruskowski.design">
-						<img
-							src="https:/bruskowski.design/icons/icon-48x48.png"
-							width={24}
-							height={24}
-							alt=""
-							style={{ verticalAlign: 'middle' }}
-						/>{' '}
+						<img src="/icon-48x48.png" width={24} height={24} alt="" style={{ verticalAlign: 'middle' }} />{' '}
 						bruskowski.design
 					</a>
 				</div>
